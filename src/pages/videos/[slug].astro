@@ -1,0 +1,145 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+
+export async function getStaticPaths() {
+  const videos = await getCollection('videos');
+  return videos.map((video) => ({
+    params: { slug: video.slug },
+    props: { video },
+  }));
+}
+
+const { video } = Astro.props;
+const { Content } = await video.render();
+
+const allVideos = (await getCollection('videos'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((v) => v.slug !== video.slug)
+  .slice(0, 3);
+---
+
+<BaseLayout title={video.data.title} description={video.data.description}>
+  <Header />
+  
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <article>
+      <div class="max-w-4xl mx-auto mb-12">
+        <a href="/" class="inline-flex items-center gap-2 text-muted hover:text-text mb-6 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Back to videos
+        </a>
+        
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">{video.data.title}</h1>
+        
+        <div class="flex flex-wrap items-center gap-4 text-muted mb-6">
+          <time datetime={video.data.pubDate.toISOString()}>
+            {video.data.pubDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </time>
+          {video.data.duration && (
+            <>
+              <span>·</span>
+              <span>{video.data.duration}</span>
+            </>
+          )}
+        </div>
+        
+        <div class="mb-8">
+          {video.data.tags.map((tag) => (
+            <span class="inline-block bg-card text-muted text-sm px-3 py-1 rounded-full mr-2 mb-2">
+              {tag}
+            </span>
+          ))}
+        </div>
+        
+        <YouTubeEmbed videoId={video.data.youtubeId} title={video.data.title} />
+        
+        <p class="text-lg text-muted mt-6 leading-relaxed">
+          {video.data.description}
+        </p>
+      </div>
+      
+      <div class="max-w-3xl mx-auto prose prose-invert prose-lg">
+        <Content />
+      </div>
+    </article>
+
+    {allVideos.length > 0 && (
+      <section class="mt-16 pt-16 border-t border-card">
+        <h2 class="text-2xl font-bold mb-8">More Videos</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {allVideos.map((v) => (
+            <a href={`/videos/${v.slug}`} class="block group">
+              <article class="bg-card rounded-xl overflow-hidden border border-card group-hover:border-primary/50 transition-all">
+                <div class="aspect-video relative">
+                  <img 
+                    src={`https://img.youtube.com/vi/${v.data.youtubeId}/maxresdefault.jpg`}
+                    alt={v.data.title}
+                    class="w-full h-full object-cover"
+                    onerror="this.src='https://img.youtube.com/vi/${v.data.youtubeId}/hqdefault.jpg'"
+                  />
+                </div>
+                <div class="p-4">
+                  <h3 class="font-medium group-hover:text-primary transition-colors line-clamp-2">
+                    {v.data.title}
+                  </h3>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+</BaseLayout>
+
+<style is:global>
+  .prose h2 {
+    color: #f1f1f1;
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+  .prose h3 {
+    color: #f1f1f1;
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+  }
+  .prose p {
+    color: #aaaaaa;
+    line-height: 1.8;
+  }
+  .prose ul {
+    color: #aaaaaa;
+  }
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+  .prose a {
+    color: #FF0000;
+    text-decoration: none;
+  }
+  .prose a:hover {
+    text-decoration: underline;
+  }
+  .prose strong {
+    color: #f1f1f1;
+  }
+  .prose code {
+    background: #2a2a2a;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .prose pre {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+  }
+</style>

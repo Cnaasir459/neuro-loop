@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title="Articles" description="AI and tech articles with embedded NeuroLoop videos so you can read and watch in one place.">
+  <Header />
+
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <section class="text-center mb-12">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted mb-3">NeuroLoop Blog</p>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Articles & Guides</h1>
+      <p class="text-muted text-lg max-w-2xl mx-auto">
+        Short, modern writeups paired with YouTube embeds. Read the notes, then watch the walkthrough without leaving the site.
+      </p>
+    </section>
+
+    {posts.length === 0 ? (
+      <div class="text-center py-12">
+        <p class="text-muted mb-4">No articles yet. Add markdown files in <code>src/content/posts</code> to publish.</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <ArticleCard post={post} />
+        ))}
+      </div>
+    )}
+  </main>
+</BaseLayout>

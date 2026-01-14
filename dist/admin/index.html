@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NeuroLoop CMS</title>
+    <link rel="stylesheet" href="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.css" />
+  </head>
+  <body>
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script>
+      // Simple custom control to call the summarize endpoint.
+      CMS.registerEventListener({
+        name: 'preSave',
+        handler: ({ entry }) => entry, // no-op
+      });
+
+      CMS.registerWidget('summarybutton', createClass({
+        render: function() {
+          const { value, onChange, forID, classNameWrapper } = this.props;
+          const isBusy = this.state?.busy;
+          return h('div', { id: forID, className: classNameWrapper }, [
+            h('button', {
+              disabled: isBusy,
+              style: {
+                padding: '8px 12px',
+                borderRadius: '8px',
+                border: '1px solid #444',
+                background: '#111',
+                color: '#fff',
+                cursor: isBusy ? 'not-allowed' : 'pointer'
+              },
+              onClick: async () => {
+                if (this.state?.busy) return;
+                const body = entry && entry.get('data') && entry.get('data').get('body') || '';
+                if (!body) {
+                  alert('Add some content first, then summarize.');
+                  return;
+                }
+                this.setState({ busy: true });
+                try {
+                  const res = await fetch('/api/summarize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: body })
+                  });
+                  if (!res.ok) throw new Error('Summarize failed');
+                  const json = await res.json();
+                  if (json.summary) {
+                    onChange(json.summary);
+                  } else {
+                    alert('No summary returned. Check server logs or API key.');
+                  }
+                } catch (err) {
+                  console.error(err);
+                  alert('Summarize failed. Ensure OPENAI_API_KEY is set on the server.');
+                } finally {
+                  this.setState({ busy: false });
+                }
+              }
+            }, isBusy ? 'Summarizing...' : 'Summarize with AI'),
+            value ? h('p', { style: { marginTop: '6px', color: '#aaa', fontSize: '12px' } }, 'Summary will replace this field.') : null
+          ]);
+        }
+      }));
+    </script>
+  </body>
+</html>

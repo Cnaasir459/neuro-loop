@@ -1,0 +1,47 @@
+backend:
+  name: github
+  repo: Cnaasir459/neuroloop-website # TODO: change to your GitHub repo "username/repo"
+  branch: main
+  base_url: "" # Optional if using GitHub App auth; for Netlify Identity/Git Gateway, change backend accordingly
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+site_url: "https://cnaasir459.github.io/neuroloop-website" # TODO: update to your deployed site
+display_url: "https://cnaasir459.github.io/neuroloop-website"
+
+collections:
+  - name: "videos"
+    label: "Videos"
+    label_singular: "Video"
+    folder: "src/content/videos"
+    extension: "md"
+    format: "frontmatter"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "YouTube ID", name: "youtubeId", widget: "string" }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "Duration", name: "duration", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: "posts"
+    label: "Articles"
+    label_singular: "Article"
+    folder: "src/content/posts"
+    extension: "md"
+    format: "frontmatter"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "YouTube ID (optional)", name: "youtubeId", widget: "string", required: false }
+      - { label: "Hero Image (optional)", name: "heroImage", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "AI Summary", name: "ai_summary", widget: "summarybutton", required: false }

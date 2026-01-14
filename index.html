@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroLoop - Tech & AI Explained</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #f1f1f1; min-height: 100vh; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    header { border-bottom: 1px solid #1a1a1a; position: sticky; top: 0; background: #0a0a0a; z-index: 50; }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #f1f1f1; }
+    .logo-icon { width: 40px; height: 40px; background: #FF0000; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: #aaaaaa; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #f1f1f1; }
+    .subscribe-btn { background: #FF0000; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background 0.2s; }
+    .subscribe-btn:hover { background: #cc0000; }
+    main { padding: 48px 0; }
+    .hero { text-align: center; margin-bottom: 64px; }
+    .hero h1 { font-size: 48px; margin-bottom: 16px; }
+    .hero h1 span { background: linear-gradient(to right, #FF0000, #ff4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { color: #aaaaaa; font-size: 18px; max-width: 600px; margin: 0 auto 32px; }
+    .search-box { max-width: 400px; margin: 0 auto; }
+    .search-input { width: 100%; background: #1a1a1a; border: 1px solid #1a1a1a; border-radius: 12px; padding: 12px 16px 12px 48px; color: #f1f1f1; font-size: 16px; outline: none; }
+    .search-input:focus { border-color: #FF0000; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .section-header h2 { font-size: 24px; }
+    .section-header a { color: #FF0000; text-decoration: none; }
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+    .video-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #1a1a1a; transition: all 0.3s; }
+    .video-card:hover { border-color: #ff000066; transform: translateY(-4px); box-shadow: 0 8px 30px rgba(255,0,0,0.1); }
+    .video-thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+    .video-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .video-card:hover .video-thumb img { transform: scale(1.05); }
+    .play-btn { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
+    .play-btn div { width: 56px; height: 56px; background: rgba(255,0,0,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: scale(0.9); transition: transform 0.3s; }
+    .video-card:hover .play-btn div { transform: scale(1.1); }
+    .play-btn svg { width: 24px; height: 24px; fill: white; margin-left: 4px; }
+    .duration { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+    .video-info { padding: 16px; }
+    .video-info h3 { font-size: 16px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .video-card:hover .video-info h3 { color: #FF0000; }
+    .video-info p { color: #aaaaaa; font-size: 14px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .tag { font-size: 12px; background: #0a0a0a; padding: 4px 8px; border-radius: 4px; color: #aaaaaa; }
+    .cta-section { margin-top: 64px; background: #1a1a1a; border-radius: 16px; padding: 32px; text-align: center; }
+    .cta-section h2 { font-size: 24px; margin-bottom: 8px; }
+    .cta-section p { color: #aaaaaa; margin-bottom: 24px; }
+    footer { border-top: 1px solid #1a1a1a; margin-top: 48px; padding: 32px 0; text-align: center; color: #aaaaaa; }
+    footer a { color: #aaaaaa; }
+    @media (max-width: 768px) { .hero h1 { font-size: 32px; } .nav-links { display: none; } }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav class="container">
+      <a href="/" class="logo">
+        <div class="logo-icon">N</div>
+        <span style="font-weight: bold; font-size: 20px;">NeuroLoop</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Videos</a>
+        <a href="/about">About</a>
+        <a href="https://www.youtube.com/@neuroloop98" target="_blank" class="subscribe-btn">Subscribe</a>
+      </div>
+    </nav>
+  </header>
+  
+  <main class="container">
+    <section class="hero">
+      <h1><span>Tech & AI</span> Explained</h1>
+      <p>Deep dives into artificial intelligence, neurotechnology, and cutting-edge tech. Making complex topics simple and accessible.</p>
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="Search videos..." id="search">
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header">
+        <h2>Latest Videos</h2>
+        <a href="https://www.youtube.com/@neuroloop98" target="_blank">View all →</a>
+      </div>
+      
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+    <section class="cta-section">
+      <h2>Stay Updated</h2>
+      <p>Get notified when new videos drop</p>
+      <a href="https://www.youtube.com/@neuroloop98" target="_blank" class="subscribe-btn" style="padding: 12px 24px; font-size: 16px;">Subscribe on YouTube</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 NeuroLoop. All rights reserved.</p>
+    <p style="margin-top: 8px;">
+      <a href="https://www.youtube.com/@neuroloop98" target="_blank">YouTube</a>
+      <span style="margin: 0 8px;">·</span>
+      <a href="#">Contact</a>
+    </p>
+  </footer>
+
+  <script>
+    const videos = [
+      {
+        id: "uj4FcvrgXOw",
+        title: "What Are AI-enhanced Closed-loop Neurostimulation Systems?",
+        description: "Learn how AI is revolutionizing neurostimulation technology with real-time monitoring and adaptive treatment.",
+        tags: ["AI", "Neurotechnology"],
+        duration: "10:32"
+      },
+      {
+        id: "kT7WCtRFrJk",
+        title: "How Does AI Enhance Closed-loop Neurostimulation Systems?",
+        description: "Discover how artificial intelligence continuously analyzes neural data for real-time treatment adjustments.",
+        tags: ["AI", "Medical Tech"],
+        duration: "8:45"
+      }
+    ];
+
+    function renderVideos() {
+      const grid = document.getElementById('videoGrid');
+      grid.innerHTML = videos.map(video => `
+        <a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" class="video-card">
+          <div class="video-thumb">
+            <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${video.title}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+            <div class="play-btn"><div><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+            <span class="duration">${video.duration}</span>
+          </div>
+          <div class="video-info">
+            <h3>${video.title}</h3>
+            <p>${video.description}</p>
+            <div class="tags">
+              ${video.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    renderVideos();
+
+    // Simple search
+    document.getElementById('search').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = videos.filter(v => 
+        v.title.toLowerCase().includes(query) || 
+        v.description.toLowerCase().includes(query)
+      );
+      const grid = document.getElementById('videoGrid');
+      if (filtered.length > 0) {
+        grid.innerHTML = filtered.map(video => `
+          <a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" class="video-card">
+            <div class="video-thumb">
+              <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${video.title}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+              <div class="play-btn"><div><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+              <span class="duration">${video.duration}</span>
+            </div>
+            <div class="video-info">
+              <h3>${video.title}</h3>
+              <p>${video.description}</p>
+              <div class="tags">${video.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+            </div>
+          </a>
+        `).join('');
+      } else {
+        grid.innerHTML = '<p style="color: #aaaaaa; grid-column: 1/-1; text-align: center; padding: 48px;">No videos found</p>';
+      }
+    });
+  </script>
+</body>
+</html>

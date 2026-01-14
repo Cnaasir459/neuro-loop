@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import VideoCard from '../components/VideoCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import Search from '../components/Search.astro';
+import { getCollection } from 'astro:content';
+
+const allVideos = (await getCollection('videos')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).slice(0, 3);
+---
+
+<BaseLayout title="Home">
+  <Header />
+  
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <section class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        <span class="bg-gradient-to-r from-primary to-red-500 bg-clip-text text-transparent">
+          Tech & AI
+        </span>
+        <span class="text-text"> Explained</span>
+      </h1>
+      <p class="text-muted text-lg max-w-2xl mx-auto mb-8">
+        Deep dives into artificial intelligence, neurotechnology, and cutting-edge tech. 
+        Making complex topics simple and accessible.
+      </p>
+      <div class="max-w-md mx-auto">
+        <Search />
+      </div>
+    </section>
+
+    <section>
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl font-bold">Latest Videos</h2>
+        <a href="https://www.youtube.com/@neuroloop98" target="_blank" rel="noopener" class="text-primary hover:underline">
+          View all →
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {allVideos.map((video) => (
+          <VideoCard video={video} />
+        ))}
+      </div>
+      
+      {allVideos.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-muted mb-4">No videos yet! Add your first video content.</p>
+          <a href="https://www.youtube.com/@neuroloop98" target="_blank" rel="noopener" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium">
+            Visit YouTube Channel
+          </a>
+        </div>
+      )}
+    </section>
+
+    <section class="mt-16">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold">Latest Articles</h2>
+        <a href="/articles" class="text-primary hover:underline">View all →</a>
+      </div>
+      {posts.length === 0 ? (
+        <div class="text-muted">No articles yet. Add some in <code>src/content/posts</code>.</div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <ArticleCard post={post} />
+          ))}
+        </div>
+      )}
+    </section>
+
+    <section class="mt-16 bg-card rounded-2xl p-8 text-center">
+      <h2 class="text-2xl font-bold mb-4">Stay Updated</h2>
+      <p class="text-muted mb-6">Get notified when new videos drop</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+        <a 
+          href="https://www.youtube.com/@neuroloop98" 
+          target="_blank"
+          rel="noopener"
+          class="bg-primary hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+        >
+          Subscribe on YouTube
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-card mt-12">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-center text-muted">
+      <p>© {new Date().getFullYear()} NeuroLoop. All rights reserved.</p>
+      <p class="mt-2">
+        <a href="https://www.youtube.com/@neuroloop98" target="_blank" rel="noopener" class="hover:text-text">
+          YouTube
+        </a>
+        <span class="mx-2">·</span>
+        <a href="#" class="hover:text-text">Contact</a>
+      </p>
+    </div>
+  </footer>
+</BaseLayout>

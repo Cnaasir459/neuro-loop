@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const recentPosts = (await getCollection('posts'))
+  .filter((p) => p.slug !== post.slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <Header />
+
+  <main class="max-w-5xl mx-auto px-4 py-12">
+    <article>
+      <a href="/articles" class="inline-flex items-center gap-2 text-muted hover:text-text mb-6 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to articles
+      </a>
+
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">{post.data.title}</h1>
+
+      <div class="flex flex-wrap items-center gap-4 text-muted mb-6">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
+        {post.data.tags.length > 0 && (
+          <>
+            <span>·</span>
+            <div class="flex gap-2 flex-wrap">
+              {post.data.tags.map((tag) => (
+                <span class="inline-block bg-card text-muted text-sm px-3 py-1 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {post.data.youtubeId && (
+        <div class="mb-8">
+          <YouTubeEmbed videoId={post.data.youtubeId} title={post.data.title} />
+        </div>
+      )}
+
+      <p class="text-lg text-muted mt-2 leading-relaxed mb-8">
+        {post.data.description}
+      </p>
+
+      <div class="prose prose-invert prose-lg">
+        <Content />
+      </div>
+    </article>
+
+    {recentPosts.length > 0 && (
+      <section class="mt-16 pt-12 border-t border-card">
+        <h2 class="text-2xl font-bold mb-6">More articles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {recentPosts.map((p) => (
+            <a href={`/articles/${p.slug}`} class="block group">
+              <article class="bg-card rounded-xl overflow-hidden border border-card group-hover:border-primary/50 transition-all">
+                <div class="p-4">
+                  <h3 class="font-medium group-hover:text-primary transition-colors line-clamp-2">
+                    {p.data.title}
+                  </h3>
+                  <p class="text-sm text-muted mt-2 line-clamp-3">
+                    {p.data.description}
+                  </p>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+</BaseLayout>
+
+<style is:global>
+  .prose h2 {
+    color: #f1f1f1;
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+  .prose h3 {
+    color: #f1f1f1;
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+  }
+  .prose p {
+    color: #aaaaaa;
+    line-height: 1.8;
+  }
+  .prose ul {
+    color: #aaaaaa;
+  }
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+  .prose a {
+    color: #FF0000;
+    text-decoration: none;
+  }
+  .prose a:hover {
+    text-decoration: underline;
+  }
+  .prose strong {
+    color: #f1f1f1;
+  }
+  .prose code {
+    background: #2a2a2a;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .prose pre {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+  }
+</style>

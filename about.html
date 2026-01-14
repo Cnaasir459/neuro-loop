@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - NeuroLoop</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #f1f1f1; min-height: 100vh; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+    header { border-bottom: 1px solid #1a1a1a; position: sticky; top: 0; background: #0a0a0a; z-index: 50; }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #f1f1f1; }
+    .logo-icon { width: 40px; height: 40px; background: #FF0000; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: #aaaaaa; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #f1f1f1; }
+    .subscribe-btn { background: #FF0000; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background 0.2s; }
+    .subscribe-btn:hover { background: #cc0000; }
+    main { padding: 48px 0; }
+    h1 { font-size: 36px; margin-bottom: 32px; }
+    .content { line-height: 1.8; color: #aaaaaa; }
+    .content h2 { color: #f1f1f1; margin: 40px 0 16px; font-size: 24px; }
+    .content p { margin-bottom: 16px; }
+    .content ul { margin: 16px 0 16px 24px; }
+    .content li { margin-bottom: 8px; }
+    .content a { color: #FF0000; text-decoration: none; }
+    .content a:hover { text-decoration: underline; }
+    .cta-box { background: #1a1a1a; border-radius: 16px; padding: 32px; text-align: center; margin-top: 48px; }
+    .cta-box h2 { color: #f1f1f1; margin-bottom: 8px; }
+    .cta-box p { color: #aaaaaa; margin-bottom: 24px; }
+    footer { border-top: 1px solid #1a1a1a; margin-top: 48px; padding: 32px 0; text-align: center; color: #aaaaaa; }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav class="container">
+      <a href="/" class="logo">
+        <div class="logo-icon">N</div>
+        <span style="font-weight: bold; font-size: 20px;">NeuroLoop</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Videos</a>
+        <a href="/about">About</a>
+        <a href="https://www.youtube.com/@neuroloop98" target="_blank" class="subscribe-btn">Subscribe</a>
+      </div>
+    </nav>
+  </header>
+  
+  <main class="container">
+    <h1>About NeuroLoop</h1>
+    
+    <div class="content">
+      <p>
+        Welcome to <strong>NeuroLoop</strong>! I'm passionate about breaking down complex topics in 
+        <strong>technology</strong> and <strong>artificial intelligence</strong> into simple, digestible content.
+      </p>
+      
+      <h2>What I Do</h2>
+      <p>
+        I create educational videos that explore the cutting edge of tech, from AI and machine learning 
+        to neurotechnology and beyond. My goal is to make advanced concepts accessible to everyone, 
+        regardless of their background.
+      </p>
+      
+      <h2>Topics I Cover</h2>
+      <ul>
+        <li>Artificial Intelligence & Machine Learning</li>
+        <li>Neurotechnology & Brain-Computer Interfaces</li>
+        <li>Emerging Tech & Innovation</li>
+        <li>Tech Explanations & Tutorials</li>
+      </ul>
+      
+      <h2>Connect</h2>
+      <p>
+        I share regular updates and deep dives on my YouTube channel. 
+        <a href="https://www.youtube.com/@neuroloop98" target="_blank">
+          Subscribe to stay updated
+        </a> 
+        with the latest content.
+      </p>
+      
+      <h2>Contact</h2>
+      <p>
+        Have a topic you'd like me to cover? Found a mistake in one of my videos? 
+        Just want to say hi? Feel free to reach out through YouTube comments or social media.
+      </p>
+    </div>
+
+    <div class="cta-box">
+      <h2>Subscribe to NeuroLoop</h2>
+      <p>Never miss a new video - join the community today!</p>
+      <a href="https://www.youtube.com/@neuroloop98" target="_blank" class="subscribe-btn" style="padding: 12px 32px; font-size: 16px;">Subscribe on YouTube</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 NeuroLoop. All rights reserved.</p>
+  </footer>
+</body>
+</html>
